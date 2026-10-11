@@ -20,7 +20,7 @@ Write-Host "Using Python: $pythonExecutable"
 
 $previousErrorActionPreference = $ErrorActionPreference
 $ErrorActionPreference = "Continue"
-& $pythonExecutable -c "import selenium, pyodbc" 2>$null
+& $pythonExecutable -c "import selenium, pyodbc, PIL, torch, transformers, sentencepiece" 2>$null
 $dependencyCheckExitCode = $LASTEXITCODE
 $ErrorActionPreference = $previousErrorActionPreference
 

@@ -1,2 +1,7 @@
 selenium>=4.11
 pyodbc>=4.0
+pillow>=10.0
+torch>=2.0
+transformers>=4.40
+sentencepiece>=0.2
+protobuf>=4.0

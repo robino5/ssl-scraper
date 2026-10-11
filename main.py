@@ -12,6 +12,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from captcha_solver import solve_captcha
+
 
 # ============================================================
 # CONFIG
@@ -28,10 +30,12 @@ SQL_PASSWORD = "leads@123"
 SQL_TABLE = "BI_trd_Admin_Fin_DayWise_SSL_details"
 
 LOGIN_URL = "https://merchant.sslcommerz.com/"
+LOGIN_ATTEMPTS = 5
+DASHBOARD_LINK_SELECTOR = "a[href*='request=dTFyQWlkYXNoYm9hcmQ6dmlld3UxckFp']"
 
 REPORT_INTERVAL_SECONDS = 10 * 60
 BANGLADESH_TIMEZONE = timezone(timedelta(hours=6))
-DAILY_STOP_TIME = datetime_time(16, 0)
+DAILY_STOP_TIME = datetime_time(14, 0)
 
 
 def seconds_until_daily_stop():
@@ -339,74 +343,79 @@ class PortalSessionExpired(RuntimeError):
     pass
 
 
+def fill_captcha():
+
+    captcha_image = wait.until(
+        EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "img[src*='setCapture']")
+        )
+    )
+
+    # Screenshot the rendered image instead of re-downloading it: every
+    # request to setCapture generates a new code for this session.
+    captcha_code = solve_captcha(captcha_image.screenshot_as_png)
+
+    if captcha_code is None:
+        return False
+
+    print(f"CAPTCHA read as {captcha_code}.")
+    captcha_field = driver.find_element(By.ID, "capture")
+    captcha_field.clear()
+    captcha_field.send_keys(captcha_code)
+
+    return True
+
+
 def login_portal():
 
-    print("Opening merchant portal...")
-    driver.get(LOGIN_URL)
+    for attempt in range(1, LOGIN_ATTEMPTS + 1):
+        print(f"Opening merchant portal (login attempt {attempt}/{LOGIN_ATTEMPTS})...")
+        driver.get(LOGIN_URL)
 
-    print("Waiting for login page...")
-    username = wait.until(
-        EC.presence_of_element_located(
-            (
-                By.CSS_SELECTOR,
-                "input[type='text'], input[type='email']"
-            )
+        username = wait.until(
+            EC.presence_of_element_located((By.ID, "user"))
         )
-    )
-    username.clear()
-    username.send_keys(USERNAME)
+        username.clear()
+        username.send_keys(USERNAME)
 
-    password = wait.until(
-        EC.presence_of_element_located(
-            (By.CSS_SELECTOR, "input[type='password']")
-        )
-    )
-    password.clear()
-    password.send_keys(PASSWORD)
+        password = driver.find_element(By.ID, "passwd")
+        password.clear()
+        password.send_keys(PASSWORD)
 
-    # Check if a CAPTCHA / verification field exists on the login page
-    captcha_fields = driver.find_elements(
-        By.CSS_SELECTOR,
-        "input[name*='captcha'], input[id*='captcha'], input[placeholder*='captcha'], input[name*='code'], input[name*='otp']"
-    )
+        if not fill_captcha():
+            print("Could not read the CAPTCHA; loading a new one.")
+            continue
 
-    if captcha_fields and captcha_fields[0].is_displayed():
-        captcha_code = input("\n[ACTION REQUIRED] Enter the CAPTCHA / OTP code shown on screen: ")
-        captcha_fields[0].clear()
-        captcha_fields[0].send_keys(captcha_code.strip())
+        login_button = driver.find_element(By.ID, "wp-submit")
+        print("Submitting login form...")
+        login_button.click()
 
-    login_button = wait.until(
-        EC.element_to_be_clickable(
-            (
-                By.CSS_SELECTOR,
-                "button[type='submit'], input[type='submit']"
-            )
-        )
-    )
-
-    print("Submitting login form...")
-    login_button.click()
-    print(
-        "If an additional verification step appears, complete it or press Enter."
-    )
-
-    try:
-        WebDriverWait(driver, 180).until(
-            EC.presence_of_element_located(
-                (
-                    By.CSS_SELECTOR,
-                    "a[href*='request=dTFyQWlkYXNoYm9hcmQ6dmlld3UxckFp']",
+        try:
+            wait.until(EC.staleness_of(login_button))
+            wait.until(
+                EC.any_of(
+                    EC.presence_of_element_located(
+                        (By.CSS_SELECTOR, DASHBOARD_LINK_SELECTOR)
+                    ),
+                    EC.presence_of_element_located((By.ID, "capture")),
                 )
             )
-        )
-    except TimeoutException as error:
-        raise RuntimeError(
-            "Login was not confirmed. Check the username/password and "
-            "complete any required verification in Chrome."
-        ) from error
+        except TimeoutException:
+            print("Login response timed out; retrying.")
+            continue
 
-    print("Logged in.")
-    print("Current URL:", driver.current_url)
+        if driver.find_elements(By.CSS_SELECTOR, DASHBOARD_LINK_SELECTOR):
+            print("Logged in.")
+            print("Current URL:", driver.current_url)
+            return
+
+        print("Login rejected (likely a wrong CAPTCHA); retrying.")
+
+    raise RuntimeError(
+        f"Login failed after {LOGIN_ATTEMPTS} attempts. Check the "
+        "username/password, or switch TROCR_MODEL in captcha_solver.py "
+        "to microsoft/trocr-base-printed."
+    )
 
 
 def process_report_cycle():
@@ -492,7 +501,7 @@ def process_report_cycle():
 
     if seconds_until_daily_stop() <= 0:
         raise RuntimeError(
-            "4:00 PM Bangladesh time reached before the database update; "
+            f"{DAILY_STOP_TIME:%I:%M %p} Bangladesh time reached before the database update; "
             "the report was kept and no late update was started."
         )
 
@@ -534,7 +543,7 @@ try:
 
 
     print(
-        "Automatic report updates every 10 minutes until 4:00 PM "
+        f"Automatic report updates every 10 minutes until {DAILY_STOP_TIME:%I:%M %p} "
         "Bangladesh time. Press Ctrl+C to stop."
     )
 
@@ -569,7 +578,7 @@ try:
         print(f"Next report update in {wait_seconds / 60:.1f} minutes.")
         time.sleep(wait_seconds)
 
-    print("4:00 PM Bangladesh time reached. Closing browser.")
+    print(f"{DAILY_STOP_TIME:%I:%M %p} Bangladesh time reached. Closing browser.")
 
 
 finally:
