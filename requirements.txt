@@ -1,0 +1,2 @@
+selenium>=4.11
+pyodbc>=4.0

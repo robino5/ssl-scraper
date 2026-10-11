@@ -1,0 +1,2372 @@
+<html><head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Dashboard | System Administration &amp; User Roles | SSLCOMMERZ</title>
+
+  
+<script src="https://ibot.sslwireless.com/webcdn/main.js?v=1.1" ibot_key="ssl-5be38b96-2e19-423f" id="ibot_id" data_user="false"></script>
+
+
+<link rel="shortcut icon" href="favicon.ico?v=111111">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<!-- Author -->
+<meta name="author" content="SSLCOMMERZ Team">
+
+
+<script src="https://merchant.sslcommerz.com/web/sslcz-design/bootstrap/js/jquery.min.js"></script>
+
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/bootstrap/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/bootstrap/css/font-awesome.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/plugins/datatables/dataTables.bootstrap.css">
+<!-- daterange picker -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/plugins/daterangepicker/daterangepicker-bs3.css">
+<!-- iCheck for checkboxes and radio inputs -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/plugins/iCheck/all.css">
+<!-- Select2 -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/plugins/select2/select2.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/dist/css/AdminLTE.min.css">
+<!-- AdminLTE Skins. Choose a skin from the css/skins -->
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/dist/css/skins/skin-black-light.css"> 
+
+<link rel="stylesheet" href="https://merchant.sslcommerz.com/web/sslcz-design/plugins/datepicker/datepicker3.css">
+<script src="https://merchant.sslcommerz.com/web/js/analytics.min.js?v=1"></script>
+<style>
+#modal-content{
+	padding: 20px;
+
+}
+
+.button-extra-padding{
+	padding-top: 25px;
+}
+
+
+.btn-danger{
+margin-right: 5px;
+}
+
+</style>
+
+<script>
+function encodeHTML(str){
+    return str.replace(/[\u00A0-\u9999<>&](?!#)/gim, function(i) {
+      return '&#' + i.charCodeAt(0) + ';';
+    });
+}
+
+function decodeHTML(str){
+    return str.replace(/&#([0-9]{1,3});/gi, function(match, num) {
+        return String.fromCharCode(parseInt(num));
+    });
+}
+</script>
+
+<script>
+function _confirm(){
+ var r=confirm("Do you want to continue?");
+ if (r==true)
+   {
+  return true;
+   }
+ else
+   {
+   return false;
+   }
+}
+
+function HideItem(itemID) {
+	var x = document.getElementById(itemID);  
+	if (x)
+		x.style.visibility = 'hidden';
+	return true;
+}
+
+
+
+function _submit(formName){
+	document.getElementById(formName).submit();
+}
+
+
+function ajax_func(data,div_name){
+
+	document.getElementById(div_name).innerHTML= "<img src='web/images/ajax-loader.gif' />";
+	if (window.XMLHttpRequest)
+	{   // code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{   // code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{   				
+			var respondAjax = xmlhttp.responseText;				
+			document.getElementById(div_name).innerHTML= respondAjax;							
+		}
+	}		
+	xmlhttp.open("GET","https://merchant.sslcommerz.com/aReqest.php?"+data, true);
+	xmlhttp.send();
+}
+function _checkBankAcount(account, div_name){                     
+	var data = "account="+account;
+	ajax_func(data, div_name);	
+}
+
+function getPosition(element) {
+	var xPosition = 0;
+	var yPosition = 0;
+ 
+	while(element) {
+		xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+		yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+		element = element.offsetParent;
+	}
+
+	return yPosition;
+}
+
+function ObjectPosition(obj) {
+    var curleft = 0;
+      var curtop = 0;
+      if (obj.offsetParent) {
+            do {
+                  curleft += obj.offsetLeft;
+                  curtop += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+      }
+      return [curleft,curtop];
+}
+
+
+function _show_message(contain, Possition) {
+	//var yPossition = getPosition(document.getElementById(Possition));
+	//alert(Possition);
+	
+
+		
+	if(document.getElementById("new_messg_"+ Possition )) {
+
+		HideItem("new_messg_"+ Possition);
+		
+	}
+
+	if(document.getElementById("dispClick_"+ Possition )) {
+	
+		//var yPossition = getPosition(document.getElementById());
+		//document.getElementById(contain).style.top = yPossition+"px";
+		
+		var aryPosition = ObjectPosition(document.getElementById("dispClick_"+ Possition ));
+		
+		
+
+		//document.getElementById('hidden_info').style.left = (aryPosition[0]+180) +'px';
+		document.getElementById('hidden_info').style.top = (aryPosition[1] - 100) +'px';		
+		
+	
+	} else {
+		document.getElementById(contain).style.top = Possition+"px";
+		
+	}
+	document.getElementById(contain).style.visibility = "visible"; 
+}
+</script>
+
+  <script>
+    window.traclytics = new Traclytics.AnalyticsTracker();
+    window.traclytics.init({
+      projectKey: 'SSLCOMMERZ',
+      accessToken: 'x2oCcVpq9FLYyTzvRMUAqXn7Jsq41G4EX3yf3ozxJ3CaxaaG57E02BEwswJ0gxne',
+      userId: '1072',
+      userName: 'Md. Ashikur Rahman ',
+      isHris: false,
+      department: 'merchant',
+      debug: false
+    });
+  </script>
+<style>
+.dropdown .fa-bell {
+    position: relative;
+}
+
+.dropdown .badge {
+    position: absolute;
+    top: 15%;
+    right: 10%;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+}
+</style></head>
+
+<body class="skin-black-light sidebar-mini">
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+
+        <header class="main-header">
+
+            <!-- Logo -->
+            <a href="https://merchant.sslcommerz.com/?request=dTFyQWlkYXNoYm9hcmQ6dmlld3UxckFp" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini">SSL</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><img src="https://merchant.sslcommerz.com/web/images/sslcommerz.png" alt="SSLCOMMERZ"></span>
+            </a>
+
+
+
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- Notifications: style can be found in dropdown.less -->
+                                                <!-- if($data->acct_type()){}  -->
+                        
+
+                        <!-- <li class="dropdown user usermenu">
+                          <p style="margin: 12px 9px 10px; font-weight: bold; color: red;">⚡️ Important Notice: Your current Merchant Panel will remain active till 15 December 2025.
+                            <br> 🚀 Experience the all-new Merchant Panel 2.0 — faster, smarter, and easier!</p>
+                        </li> -->
+
+                         <li class="dropdown user usermenu">
+                            <a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudE5vdGlmaWNhdGlvbjp2aWV3dTFyQWk%3D">
+                                <span><i class="fa fa-bell"></i></span>
+                                                                <span class="badge">10</span>
+                            </a>
+                        </li>
+
+                                                <li class="dropdown user usermenu">
+                            <a href="#">
+                                <button class="btn btn-primary" onclick="handleRedirect()" style="margin-top: -11px; margin-bottom: -10px">
+                                    Switch to New Panel
+                                    <span class="ms-1"><i class="fa fa-external-link" aria-hidden="true"></i></span>
+                                </button>
+                            </a>
+                        </li>
+                        
+
+
+                                                
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="https://merchant.sslcommerz.com/web/sslcz-design/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">
+                                    Md. Ashikur Rahman                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="https://merchant.sslcommerz.com/web/sslcz-design/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <p>
+                                        Md. Ashikur Rahman                                         | LankaBangla Securities Ltd                                        <small>Merchant Admin</small>                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="https://merchant.sslcommerz.com/?request=dTFyQWljaGFuZ2VQYXNzd2Q6ZWRpdHUxckFp" class="btn btn-warning btn-flat">Change Password</a>
+                                    </div>
+
+                                                                        <div class="pull-right">
+                                        <a href="https://merchant.sslcommerz.com/?request=dTFyQWlsb2dvZmY6dmlld3UxckFp" class="btn btn-danger btn-flat">Sign out</a>
+                                    </div>
+                                                                    </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+            </nav>
+        </header>
+
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar" style="height: auto;">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="https://merchant.sslcommerz.com/web/sslcz-design/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>Md. Ashikur Rahman</p>
+                        <a href="https://merchant.sslcommerz.com/?request=dTFyQWljaGFuZ2VQYXNzd2Q6dmlld3UxckFp"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+                <!-- search form -->
+                                <!-- /.search form -->
+                <!-- sidebar menu: : style can be found in sidebar.less -->
+                <ul class="sidebar-menu"><li class="header">MAIN NAVIGATION</li><li class="active ">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlkYXNoYm9hcmQ6dmlld3UxckFp" class="top_link"><i class="fa fa-dashboard"></i><span> Dashboard</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudEN1cnJlbmN5UmF0ZUNvbnZlcnNpb246dmlld3UxckFp" class="top_link"><i class="fa fa-reply"></i><span> Currency Rate Conversion</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWl0cmFuc2FjdGlvbnNNZXJjaGFudDp2aWV3dTFyQWk%3D" class="top_link"><i class="fa fa-list-alt"></i><span> Transactions</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudEludm9pY2U6dmlld3UxckFp" class="top_link"><i class="fa fa-pencil-square-o"></i><span> Invoice</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlzZXJ2aWNlRGVsaXZlcnlNYW5hZ2VkQnlNZXJjaGFudDp2aWV3dTFyQWk%3D" class="top_link"><i class="fa fa-check-square-o"></i><span> Service Delivery</span></a>
+</li>
+<li class="">
+<a style="" href="https://merchant.sslcommerz.com/?request=dTFyQWlzc2xPdGhlclNlcnZpY2VzOnZpZXd1MXJBaQ%3D%3D" class="top_link"><i class="fa fa-plus-square"></i><span> Grow Your Business</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D" class="top_link"><i class="fa fa-crosshairs"></i><span> Id Tracking</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlyZWZ1bmRJbml0aWF0ZWJ5TWVyY2hhbnQ6dmlld3UxckFp" class="top_link"><i class="fa fa-exchange"></i><span> Refund Request</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWl0aWNrZXRpbmdTeXN0ZW06dmlld3UxckFp" class="top_link"><i class="fa fa-ticket"></i><span> Transaction Ticket</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWljYW1wYWlnbmJ5bWVyY2hhbnQ6dmlld3UxckFp" class="top_link"><i class="fa fa-exchange"></i><span> Merchant Campaign Setup</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWljaGFyZ2VCYWNrQ29uZmlybUJ5TWVyY2hhbnQ6dmlld3UxckFp" class="top_link"><i class="fa fa-reply"></i><span> Chargeback Request</span></a>
+</li>
+<li class=" treeview">
+<a href="#"><i class="fa fa-bar-chart"></i><span>Analytic</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlBbmFseXRpY1JlcG9ydE1hcmtldFNoYXJlOnZpZXd1MXJBaQ%3D%3D"><i class="fa fa-pie-chart"></i>Market Share</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlBbmFseXRpY1JlcG9ydEdlb2xvY2F0aW9uOnZpZXd1MXJBaQ%3D%3D"><i class="fa fa-map-marker"></i>Geolocation</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlBbmFseXRpY1JlcG9ydE9wZXJhdG9yOnZpZXd1MXJBaQ%3D%3D"><i class="fa fa-phone"></i>Mobile Operators</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlBbmFseXRpY1JlcG9ydERldmljZTp2aWV3dTFyQWk%3D"><i class="fa fa-internet-explorer"></i>User Agent</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlBbmFseXRpY1JlcG9ydElzc3Vlcjp2aWV3dTFyQWk%3D"><i class="fa fa-map-marker"></i>Issuer Location</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlBbmFseXRpY1JlcG9ydFNhdmVkQ2FyZDp2aWV3dTFyQWk%3D"><i class="fa fa-credit-card"></i>Saved Card</a>
+</li>
+</ul>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlub3RpZmljYXRpb25NZXJjaGFudDp2aWV3dTFyQWk%3D" class="top_link"><i class="fa fa-bell-o"></i><span> Success Notification</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlwYXltZW50SW5mb01lcmNoYW50OnZpZXd1MXJBaQ%3D%3D" class="top_link"><i class="fa fa-file-text-o"></i><span> Accounting</span></a>
+</li>
+<li class=" treeview">
+<a href="#"><i class="fa fa-truck"></i><span>Logistic</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlzaGlwcGluZ01hbmFnZWRCeU1lcmNoYW50OnZpZXd1MXJBaQ%3D%3D"><i class="fa fa-truck"></i>Shipping List</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlvcmRlclBpY2t1cFN0b3JlTWFuYWdlZEJ5TWVyY2hhbnQ6dmlld3UxckFp"><i class="fa fa-truck"></i>Order Pickup Store</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlvcmRlckJ1bGtNYW5hZ2VkQnlNZXJjaGFudDp2aWV3dTFyQWk%3D"><i class="fa fa-truck"></i>Order Bulk</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlvcmRlckJpbGxpbmdCeU1lcmNoYW50OnZpZXd1MXJBaQ%3D%3D"><i class="fa fa-truck"></i>Order Billing</a>
+</li>
+</ul>
+</li>
+<li class=" treeview">
+<a href="#"><i class="fa fa-money"></i><span>Refer &amp; Earn</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWljcmVhdGVNZXJjaGFudFJlZmVycmFsOnZpZXd1MXJBaQ%3D%3D"><i class="fa fa-money"></i>Create Merchant Referral</a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlyZWZlcnJhbE1lcmNoYW50TGlzdDp2aWV3dTFyQWk%3D"><i class="fa fa-money"></i>My Referral list</a>
+</li>
+</ul>
+</li>
+<li class=" treeview">
+<a href="#"><i class="fa fa-list"></i><span>Campaign Requests</span><i class="fa fa-angle-left pull-right"></i></a>
+<ul class="treeview-menu">
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltYW5hZ2VDYW1wYWlnblJlcXVlc3Q6dmlld3UxckFp"><i class="fa fa-list"></i>Campaign Request List</a>
+</li>
+</ul>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWllbWlQYXJ0bmVyTGlzdDp2aWV3dTFyQWk%3D" class="top_link"><i class="fa fa-list"></i><span> EMI Partner List</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlzdG9yZVJlcXVlc3RCeU1lcmNoYW50OnZpZXd1MXJBaQ%3D%3D" class="top_link"><i class="fa fa-list-alt"></i><span> Store Request By Merchant</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWliYW5rUmVxdWVzdEJ5TWVyY2hhbnQ6dmlld3UxckFp" class="top_link"><i class="fa fa-list-alt"></i><span> Bank Request By Merchant</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFJlcXVlc3Q6dmlld3UxckFp" class="top_link"><i class="fa fa-money"></i><span> Tickets/Queries</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWl1c2VyTWFuYWdlZEJ5TWVyY2hhbnQ6dmlld3UxckFp" class="top_link"><i class="fa fa-users"></i><span> My Users</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlzdG9yZU1hbmFnZWRieU1lcmNoYW50OnZpZXd1MXJBaQ%3D%3D" class="top_link"><i class="fa fa-shopping-cart"></i><span> My Stores</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudE5vdGlmaWNhdGlvbjp2aWV3dTFyQWk%3D" class="top_link"><i class="fa fa-reply"></i><span> Notification List</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudEZ5UmVwb3J0OnZpZXd1MXJBaQ%3D%3D" class="top_link"><i class="fa fa-reply"></i><span> Financial Year Report</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudEZBUTp2aWV3dTFyQWk%3D" class="top_link"><i class="fa fa-reply"></i><span> Merchant FAQ</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFR1dG9yaWFsOnZpZXd1MXJBaQ%3D%3D" class="top_link"><i class="fa fa-money"></i><span> Videos</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlzbXNQdXJjaGFzZTp2aWV3dTFyQWk%3D" class="top_link"><i class="fa fa-reply"></i><span> Purchase SMS</span></a>
+</li>
+<li class="">
+<a href="https://merchant.sslcommerz.com/?request=dTFyQWlkZXZlbG9wZXI6dmlld3UxckFp" class="top_link"><i class="fa fa-link"></i><span> Developer</span></a>
+</li>
+</ul>            </section>
+            <!-- /.sidebar -->
+        </aside>
+
+        <script>
+        function handleRedirect() {
+            window.host =
+                "https://merchant.sslcommerz.com/aReqest.php?request=dTFyQWltZXJjaGFudEN1cnJlbmN5UmF0ZUNvbnZlcnNpb246dmlld3UxckFp";
+            const username = "ibrokerlive@ssl"
+            const typeid = "84"
+            const authKey = "26ee18b08ad4551db90100d4309271f2"
+
+            $.ajax({
+                url: window.host,
+                type: 'POST',
+                data: {
+                    username: username,
+                    typeid: typeid,
+                    authKey: authKey
+                },
+                success: function(response) {
+                    if (response != null) {
+                        window.open(response, '_blank')
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: " + error);
+                },
+                complete: function(xhr, status) {
+                    console.log('AJAX request completed with status: ' + status);
+                }
+            });
+        }
+        </script>
+        <style media="screen">
+            .tab-content>.tab-pane {
+                display: block;
+                height: 0;
+                overflow: hidden;
+            }
+            .tab-content>.tab-pane.active {
+                height: auto;
+            }
+            .TheLegendOfDeviceChart .line-legend {
+                padding: 0;
+                list-style: none;
+                text-align: right;
+            }
+            .TheLegendOfDeviceChart .line-legend li {
+                display: inline-block;
+                margin-left: 20px;
+            }
+            .TheLegendOfDeviceChart .line-legend li span {
+                width: 12px;
+                height: 12px;
+                border-radius: 6px;
+                display: inline-block;
+                position: relative;
+                top: 2px;
+                right: 4px;
+            }
+            .TheLegendOfDeviceChart .line-legend li p {
+                margin: 0;
+                display: inline-block;
+            }
+            body .dropdown-menu {
+                border-radius: 0;
+            }
+            body .multiselect:hover,
+            body .multiselect {
+                text-align: left;
+                background: #fff;
+            }
+            body .multiselect .caret {
+                position: absolute;
+                right: 6px;
+                top: 14px;
+            }
+            body .multiselect-native-select {
+                position: relative;
+            }
+            body .multiselect-native-select select {
+                border: 0 !important;
+                clip: rect(0 0 0 0) !important;
+                height: 1px !important;
+                margin: -1px -1px -1px -3px !important;
+                overflow: hidden !important;
+                padding: 0 !important;
+                position: absolute !important;
+                width: 1px !important;
+                left: 50%;
+                top: 30px;
+            }
+            body .multiselect-container {
+                position: absolute;
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+            body .multiselect-container .input-group {
+                margin: 5px;
+            }
+            body .multiselect-container li {
+                padding: 0;
+            }
+            body .multiselect-container li .multiselect-all label {
+                font-weight: 700;
+            }
+            body .multiselect-container li a {
+                padding: 0;
+            }
+            body .multiselect-container li a label {
+                margin: 0;
+                height: 100%;
+                cursor: pointer;
+                font-weight: 400;
+                padding: 3px 20px 3px 40px;
+            }
+            body .multiselect-container li a label input[type=checkbox] {
+                margin-bottom: 5px;
+            }
+            body .multiselect-container li a label.radio {
+                margin: 0;
+            }
+            body .multiselect-container li a label.checkbox {
+                margin: 0;
+            }
+            body .multiselect-container li.multiselect-group label {
+                margin: 0;
+                padding: 3px 20px 3px 20px;
+                height: 100%;
+                font-weight: 700;
+            }
+            body .multiselect-container li.multiselect-group-clickable label {
+                cursor: pointer;
+            }
+            body .btn-group .btn-group .multiselect.btn {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+            body .form-inline .multiselect-container label.checkbox {
+                padding: 3px 20px 3px 40px;
+            }
+            body .form-inline .multiselect-container label.radio {
+                padding: 3px 20px 3px 40px;
+            }
+            body .form-inline .multiselect-container li a label.checkbox input[type=checkbox] {
+                margin-left: -20px;
+                margin-right: 0;
+            }
+            body .form-inline .multiselect-container li a label.radio input[type=radio] {
+                margin-left: -20px;
+                margin-right: 0;
+            }
+
+            @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(-250px * 7));
+        }
+      }
+      .slider {
+        height: 100px;
+        margin: auto;
+        overflow: hidden;
+        position: relative;
+        width: auto;
+        background-color: #fff;
+      }
+      .slider .slide-track {
+        animation: scroll 40s linear infinite;
+        display: flex;
+        width: calc(250px * 14);
+      }
+      .slider .slide {
+        height: 100px;
+        width: 250px;
+      }
+        </style>
+                <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper" style="min-height: 1378.14px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Merchant Dashboard
+                    <small>Version 3.0 | Settlement Info updated from Sun, 20 Dec 2015 | <a href="#" data-toggle="modal" data-target="#myModalpdf">User Manual</a></small>
+                </h1>
+
+                                    <!--<form action="">-->
+                    <div style="padding-top:5px;">
+                        Select Store
+
+                        <select id="multiselect" name="store_list[]" multiple="multiple" style="display: none;">
+                                                            <option value="lankabangla@ssl001">lankabangla@ssl001</option>
+                                                            <option value="ibrokerlive">ibrokerlive</option>
+                                                            <option value="lbmarketpulsebdlive">lbmarketpulsebdlive</option>
+                                                            <option value="lblankabdlive">lblankabdlive</option>
+                                                    </select><div class="btn-group" style="width: 160px;"><button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title="Select an Option" style="width: 160px; overflow: hidden; text-overflow: ellipsis;"><span class="multiselect-selected-text">Select an Option</span> <b class="caret"></b></button><ul class="multiselect-container dropdown-menu"><li class="multiselect-item multiselect-all"><a tabindex="0" class="multiselect-all"><label class="checkbox"><input type="checkbox" value="multiselect-all">  Select all</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="lankabangla@ssl001"> lankabangla@ssl001</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="ibrokerlive"> ibrokerlive</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="lbmarketpulsebdlive"> lbmarketpulsebdlive</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="lblankabdlive"> lblankabdlive</label></a></li></ul></div>
+                        <button onclick="getSelectedValues()" class="btn btn-success">Filter Now</button>
+                    </div>
+                    <!--</form>-->
+                                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">Dashboard</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                                <!-- Info boxes -->
+                
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-aqua"><i class="fa fa-briefcase"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Transaction</span>
+                                    <span class="info-box-number"><small>Total Successful Amount (Last 30 Days)</small></span>
+                                    <span class="info-box-number"><small>3,772,452.12 BDT</small></span>
+                                </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div><!-- /.col -->
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-red"><i class="fa fa-shopping-cart"></i></span>
+                                <div class="info-box-content">
+                                                                            <span class="info-box-text">Store</span>
+                                        <span class="info-box-number"><small>Total Stores</small></span>
+                                        <span class="info-box-number"><small>4</small></span>
+                                                                    </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div><!-- /.col -->
+
+                        <!-- fix for small devices only -->
+                        <div class="clearfix visible-sm-block"></div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-green"><i class="fa fa-users"></i></span>
+                                <div class="info-box-content">
+                                                                            <span class="info-box-text">User</span>
+                                        <span class="info-box-number"><small>Total Users</small></span>
+                                        <span class="info-box-number"><small>4</small></span>
+                                                                    </div><!-- /.info-box-content -->
+                            </div><!-- /.info-box -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                                <!-- Main row -->
+                <div class="row">
+                    <!-- Left col -->
+                    <div class="col-md-8">
+
+                        <!-- Custom Tabs -->
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab_1" data-toggle="tab">Successful Transaction</a></li>
+                                <li><a href="#tab_2" data-toggle="tab">Successful Amount</a></li>
+                                <li class="pull-right"><p class="text-bold" style="padding:10px 15px">Last 30 Days</p></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                                                
+                                    <div class="chart tab-pane active" id="tab_1">
+                                        <canvas id="barChart_trans" style="height: 229px; width: 1066px;" width="1066" height="229"></canvas>
+                                    </div><!-- /.tab-pane -->
+
+                                    <div class="chart tab-pane" id="tab_2">
+                                        <canvas id="barChart_amount" style="height: 229px; width: 1066px;" width="1066" height="229"></canvas>
+                                    </div><!-- /.tab-pane -->
+                                
+                            </div><!-- /.tab-content -->
+                        </div><!-- nav-tabs-custom -->
+
+                        <!-- Custom Tabs -->
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab_3" data-toggle="tab">Successful Transaction</a></li>
+                                <li><a href="#tab_4" data-toggle="tab">Successful Amount</a></li>
+                                <li class="pull-right"><p class="text-bold" style="padding:10px 15px">Last 30 Days</p></li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                
+                                
+                                    <div class="chart tab-pane active" id="tab_3">
+                                        <div id="TheLegendOfDeviceChart" class="TheLegendOfDeviceChart"><ul class="line-legend"><li><span style="background-color:#f56954"></span><p>DBBLMOBILEB</p></li><li><span style="background-color:#01ff70"></span><p>NEXUS</p></li><li><span style="background-color:#3c8dbc"></span><p>BKASH</p></li><li><span style="background-color:#3d9970"></span><p>VISA</p></li><li><span style="background-color:#d81b60"></span><p>InstaPay</p></li><li><span style="background-color:#00a65a"></span><p>NAGAD</p></li><li><span style="background-color:#f39c12"></span><p>NPSB</p></li><li><span style="background-color:#00c0ef"></span><p>IBBL</p></li><li><span style="background-color:#605ca8"></span><p>MASTER</p></li><li><span style="background-color:#0073b7"></span><p>CITYBANKIB</p></li><li><span style="background-color:#330099"></span><p>SBAC</p></li><li><span style="background-color:#663333"></span><p>MTBL</p></li><li><span style="background-color:#666633"></span><p>PATHAOPAY</p></li></ul></div>
+                                        <canvas id="areaChart" style="height: 229px; width: 1066px;" width="1066" height="229"></canvas>
+                                    </div><!-- /.tab-pane -->
+
+                                    <div class="chart tab-pane" id="tab_4">
+                                        <div id="TheLegendOfDeviceChart2" class="TheLegendOfDeviceChart"><ul class="line-legend"><li><span style="background-color:#f56954"></span><p>DBBLMOBILEB</p></li><li><span style="background-color:#01ff70"></span><p>NEXUS</p></li><li><span style="background-color:#3c8dbc"></span><p>BKASH</p></li><li><span style="background-color:#3d9970"></span><p>VISA</p></li><li><span style="background-color:#d81b60"></span><p>InstaPay</p></li><li><span style="background-color:#00a65a"></span><p>NAGAD</p></li><li><span style="background-color:#f39c12"></span><p>NPSB</p></li><li><span style="background-color:#00c0ef"></span><p>IBBL</p></li><li><span style="background-color:#605ca8"></span><p>MASTER</p></li><li><span style="background-color:#0073b7"></span><p>CITYBANKIB</p></li><li><span style="background-color:#330099"></span><p>SBAC</p></li><li><span style="background-color:#663333"></span><p>MTBL</p></li><li><span style="background-color:#666633"></span><p>PATHAOPAY</p></li></ul></div>
+                                        <canvas id="areaChart2" style="height: 229px; width: 1066px;" width="1066" height="229"></canvas>
+                                    </div><!-- /.tab-pane -->
+                                
+
+
+                            </div><!-- /.tab-content -->
+                        </div><!-- nav-tabs-custom -->
+
+                        <!-- Custom Tabs -->
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#tab_5" data-toggle="tab">Successful Transaction</a></li>
+                                <li><a href="#tab_6" data-toggle="tab">Successful Amount</a></li>
+                                <li class="pull-right"><p class="text-bold" style="padding:10px 15px">Hourly</p></li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                                                
+                                    <div class="chart tab-pane active" id="tab_5">
+                                        <canvas id="areaChart3" style="height: 229px; width: 1066px;" width="1066" height="229"></canvas>
+                                    </div><!-- /.tab-pane -->
+
+                                    <div class="chart tab-pane" id="tab_6">
+                                        <canvas id="areaChart4" style="height: 229px; width: 1066px;" width="1066" height="229"></canvas>
+                                    </div><!-- /.tab-pane -->
+                                
+
+                            </div><!-- /.tab-content -->
+                        </div><!-- nav-tabs-custom -->
+
+                        <!-- TABLE: LATEST ORDERS -->
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Latest Successful Transactions (in Last 30 Days)</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="table-responsive">
+                                    <table class="table no-margin">
+                                        <thead>
+                                        <tr>
+                                            <th>Transaction ID</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Time</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                                                                            <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWkyMTMxMjAyNjEwMDUxMTQ2NDM0NjEzNTJ1MXJBaQ%3D%3D">213120261005114643461352</a></td>
+                                                        <td>5082.50</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 11:46 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWkxODk0MjAyNjEwMDUxMTQ0MjU3NjEzMTZ1MXJBaQ%3D%3D">189420261005114425761316</a></td>
+                                                        <td>2033.00</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 11:44 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWk5MDM5MjAyNjEwMDUxMTQyMjk0ODg3MjB1MXJBaQ%3D%3D">903920261005114229488720</a></td>
+                                                        <td>1016.50</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 11:42 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWkzNjc4MjAyNjEwMDUxMTM0Mjc1MDQxMzh1MXJBaQ%3D%3D">367820261005113427504138</a></td>
+                                                        <td>508.25</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 11:34 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWk3MzkyMjAyNjEwMDUxMTE0MzQxODcwMTl1MXJBaQ%3D%3D">739220261005111434187019</a></td>
+                                                        <td>5082.50</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 11:14 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWk2MDIwMjAyNjEwMDUxMTA3NDkyMzE2NTJ1MXJBaQ%3D%3D">602020261005110749231652</a></td>
+                                                        <td>500.12</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 11:07 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWkzNjAxMjAyNjEwMDUxMDU0NDkxNjgwMDN1MXJBaQ%3D%3D">360120261005105449168003</a></td>
+                                                        <td>2033.00</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 10:54 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWk1NzAyMjAyNjEwMDUxMDQ3MzgwMDgxNTh1MXJBaQ%3D%3D">570220261005104738008158</a></td>
+                                                        <td>996.17</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 10:47 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWk3OTk0MjAyNjEwMDUxMDQ1NDA5Mzg4NjN1MXJBaQ%3D%3D">799420261005104540938863</a></td>
+                                                        <td>203.30</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 10:45 AM</td>
+                                                    </tr>
+                                                                                                        <tr>
+                                                        <td><a href="https://merchant.sslcommerz.com/?request=dTFyQWltZXJjaGFudFRyYWNraW5nOnZpZXd1MXJBaQ%3D%3D&amp;merchantid=dTFyQWkxMTIwMjYxMDA1MTA0MTI2MDkyNjIwdTFyQWk%3D">1120261005104126092620</a></td>
+                                                        <td>5107.50</td>
+                                                        <td><span class="label label-success">Success</span></td>
+                                                        <td>05-10-2026 10:41 AM</td>
+                                                    </tr>
+                                                                                            </tbody>
+                                    </table>
+                                </div><!-- /.table-responsive -->
+                            </div><!-- /.box-body -->
+                            <div class="box-footer clearfix">
+                                <a href="https://merchant.sslcommerz.com/?request=dTFyQWl0cmFuc2FjdGlvbnNNZXJjaGFudDp2aWV3dTFyQWk%3D" class="btn btn-sm btn-default btn-flat pull-right">View All Transactions</a>
+                            </div><!-- /.box-footer -->
+                        </div><!-- /.box -->
+
+
+                        <div class="box box-default">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Channels on Last 30 Days</h3>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="chart-responsive">
+                                                                                                                                        <canvas id="pieChart" height="305" width="1066" style="width: 1066px; height: 305px;"></canvas>
+                                            
+                                        </div><!-- ./chart-responsive -->
+                                    </div><!-- /.col -->
+                                    <div class="col-md-12">
+                                         <i class="fa fa-circle" style="color: #f56954;"></i> BKASH  <i class="fa fa-circle" style="color: #01ff70;"></i> NPSB  <i class="fa fa-circle" style="color: #3c8dbc;"></i> NAGAD  <i class="fa fa-circle" style="color: #3d9970;"></i> VISA  <i class="fa fa-circle" style="color: #d81b60;"></i> DBBLMOBILEB  <i class="fa fa-circle" style="color: #00a65a;"></i> MASTER  <i class="fa fa-circle" style="color: #f39c12;"></i> CITYBANKIB  <i class="fa fa-circle" style="color: #00c0ef;"></i> InstaPay  <i class="fa fa-circle" style="color: #605ca8;"></i> NEXUS  <i class="fa fa-circle" style="color: #0073b7;"></i> IBBL  <i class="fa fa-circle" style="color: #330099;"></i> SBAC  <i class="fa fa-circle" style="color: #663333;"></i> MTBL  <i class="fa fa-circle" style="color: #666633;"></i> PATHAOPAY                                     </div><!-- /.col -->
+                                </div><!-- /.row -->
+
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->                        
+
+
+                    </div><!-- /.col -->
+
+                    <div class="col-md-4">
+
+
+                        <!-- Info Boxes Style 2 -->
+                        <div class="box box-widget widget-user-2">
+                            <!-- Operational Information -->
+                            <div class="widget-user-header bg-red">
+                                <h3>Operational Informatom</h3>
+                                <h5>(Last 30 Days)</h5>
+                            </div>
+                            <div class="box-footer no-padding">
+                                
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Pending Chargeback No<span class="pull-right badge bg-green">0</span></a></li>
+                                    <li><a href="#">Pending Chargeback Amount<span class="pull-right badge bg-green"></span></a></li>
+
+
+                                    <li><a href="#">No of Refund<span class="pull-right badge bg-green">0</span></a></li>
+                                    <li><a href="#">Total Refund Amount<span class="pull-right badge bg-green"></span></a></li>
+
+                                    <li><a href="https://merchant.sslcommerz.com/?request=dTFyQWl0cmFuc2FjdGlvbnNNZXJjaGFudDp2aWV3dTFyQWk%3D&amp;tStatus=dTFyQWllc2Nyb3d1MXJBaQ%3D%3D&amp;startDateTime=05-09-2026&amp;EndDateTime=05-10-2026" title="Submit delivery confirmation to initiate settlement">Pending Escrow (Delivery Confirmation Required)<span class="pull-right badge bg-orange">0</span></a></li>
+
+                                </ul>
+                            </div>
+                        </div>   
+
+
+                        <!-- Info Boxes Style 2 -->
+                        <div class="box box-widget widget-user-2">
+                                                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-green">
+                                <h3>Today  vs Yesterday (00:00 - 10:49)</h3>
+                                <h5></h5>
+                            </div>
+                            <div class="box-footer no-padding">
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Yesterday's Transaction <span class="pull-right badge bg-blue">0</span></a></li>
+                                    <li><a href="#">Yesterday's Amount <span class="pull-right badge bg-blue">0</span></a></li>
+                                    <li><a href="#">Yesterday's Amount Per Transaction <span class="pull-right badge bg-blue">0</span></a></li>
+                                    <li><a href="#">Today's Transaction <span class="pull-right badge bg-aqua">10</span></a></li>
+                                    <li><a href="#">Today's Amount <span class="pull-right badge bg-aqua">76415</span></a></li>
+                                    <li><a href="#">Today's Amount Per Transaction <span class="pull-right badge bg-aqua">7642</span></a></li>
+                                    <li><a href="#">Growth ( Amount ) <span class="pull-right badge bg-green">0% Upward</span></a></li>
+                                    <li><a href="#">Growth ( Transaction ) <span class="pull-right badge bg-green">0% Upward</span></a></li>
+                                </ul>
+                            </div>
+
+
+
+                        </div>
+
+
+                        <!-- Info Boxes Style 2 -->
+                        <div class="box box-widget widget-user-2">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header bg-blue">
+                                <h3>Key Contact Details</h3>
+                                <h5></h5>
+                            </div>
+                            <div class="box-footer">
+
+                                <h4><strong>1. Key Account Manager</strong></h4>
+                                <p>For any query related with new/existing business, campaign, enabling new features, product, SMS, new stores, etc </p>                            
+                                                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Name <span class="pull-right badge">Saifur Rahman Shovon</span></a></li>
+                                    <li><a href="#">Contact No <span class="pull-right badge">01707302603</span></a></li>
+                                    <li><a href="#">Email Address <span class="pull-right badge">saifur.rahman@sslcommerz.com</span></a></li>
+                                </ul>  
+
+                                                            
+
+                                <h4><strong>2. Operation</strong></h4>
+
+                                <p>For any query related with transaction, refund, chargeback, emi and settlement</p>
+
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Email Address <span class="pull-right badge">operation@sslcommerz.com</span></a></li>
+                                    <li><a href="#">Telephone <span class="pull-right badge">+880-9677-725222 </span></a></li>
+                                </ul>
+
+
+                                <h4><strong>3. Technical</strong></h4>
+                                <p>For any query related with SSLCOMMERZ API(s) and Integration</p>
+
+                                <ul class="nav nav-stacked">
+                                    <li><a href="#">Email Address <span class="pull-right badge">integration@sslcommerz.com</span></a></li>
+                                </ul>     
+
+                            </div>
+                        </div>                         
+
+
+
+                        <!-- Info Boxes Style 2 -->
+                                                
+
+                        
+
+                        <!-- Info Boxes Style 2 -->
+                        <div class="box box-widget widget-user-2">
+                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                            <div class="widget-user-header" style="background-color: #7312f3">
+                                <h3>Currency Convert Rate</h3>
+                                <h5></h5>
+                            </div>
+                            <div class="box-footer no-padding">
+
+                                <div class="table-responsive">
+                                    <table class="table no-margin">
+                                    <tbody><tr>
+                                        <th>Currency From</th>
+                                        <th>Currency To</th>
+                                        <th>Convert Rate</th>
+                                        <!--th>Last Updated</th-->
+                                    </tr>
+                                    </tbody><tbody>
+
+                                    	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            USD                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            123.4000                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            04-10-2026 13:37                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            SGD                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            97.5794                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            04-10-2026 14:22                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            INR                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            1.2776                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            05-10-2026 08:01                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            AED                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            33.4517                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            05-10-2026 08:01                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            EUR                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            140.0975                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            04-10-2026 14:23                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            MYR                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            30.0775                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            05-10-2026 08:01                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            QAR                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            33.7293                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            05-10-2026 08:01                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            GBP                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            164.8704                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            04-10-2026 14:24                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            SAR                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            32.7930                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            05-10-2026 08:01                                            </span>
+                                            </td-->					
+                                            </tr>
+                                        	
+                                            <tr>		
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            AUD                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            BDT                                            </span>
+                                            </td>
+
+                                            <td>
+                                            <span class="pull-centre bold">
+                                            85.3978                                            </span>
+                                            </td>
+
+                                            <!--td>
+                                            <span class="pull-centre bold">
+                                            05-10-2026 08:01                                            </span>
+                                            </td-->					
+                                            </tr>
+                                                                                </tbody>
+                                    </table>
+                                </div> 
+                            </div>  
+                        </div>
+
+
+
+
+
+
+
+                        
+                                <div class="box box-default">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title alert alert-info" style="width: 100%;">Collect Payment with QR</h3>
+                                        <div class="box-tools pull-right">
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="chart-responsive">
+
+                                                    <center>
+                                                        <img class="img-responsive" src="https://report.sslcommerz.com/web/images/generateQR.php?QR=https://invoice.sslcommerz.com/invoice-form?refer=5DAC0A4293412" alt="Collect Payment with QR" width="60%" height="auto">
+                                                    </center>
+                                                    <br>
+                                                    <center>
+                                                        <p>
+                                                            <a href="https://merchant.sslcommerz.com/?request=dTFyQWlkYXNoYm9hcmQ6ZXhlY3V0ZXUxckFp&amp;generate=dTFyQWlRUnUxckFp&amp;payLinkID=dTFyQWk1REFDMEE0MjkzNDEydTFyQWk%3D">Click here to download the QR</a>  &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;<a href="https://merchant.sslcommerz.com/?request=dTFyQWlzdG9yZXN1YnNjcmliZXI6dmlld3UxckFp&amp;merchant_id=dTFyQWk4NHUxckFp&amp;store_id=dTFyQWkyNzA5dTFyQWk%3D">Manage QR</a>                                                        </p>
+
+                                                    </center>
+                                                </div><!-- ./chart-responsive -->
+                                            </div><!-- /.col -->
+                                        </div><!-- /.row -->
+
+                                    </div><!-- /.box-body -->
+                                </div><!-- /.box -->
+                            
+
+
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </section><!-- /.content -->
+        </div><!-- /.content-wrapper -->
+
+
+        </div><!-- /.col -->
+        <!-- /.row -->
+        
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 3.0.0
+            </div>
+            2011-2026 © <a href="https://www.sslcommerz.com/" target="_blank">SSLCOMMERZ</a> - All rights reserved. It is Powered by <a href="https://www.sslwireless.com/" target="_blank">SSL Wireless</a>.        </footer>
+        
+
+        <div id="myModalpdf" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <object data="https://merchant.sslcommerz.com/app/webs/attdoc/UserManualV3.pdf" type="application/pdf" width="100%" height="850">
+                        <p>
+                            It appears your Web browser is not configured to display PDF files. No worries, just <a href="https://merchant.sslcommerz.com/app/webs/attdoc/UserManualV3.pdf">click here to download the PDF file.</a>
+                        </p>
+                    </object>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        <!-- Bootstrap 3.3.5 -->
+        <!--<script src="bootstrap/js/bootstrap.min.js"></script>-->
+        <script src="https://merchant.sslcommerz.com/web/sslcz-design/bootstrap/js/bootstrap.min.js"></script>
+        <!-- ChartJS 1.0.1 -->
+        <script src="https://merchant.sslcommerz.com/web/sslcz-design/plugins/chartjs/Chart.min.js"></script>
+        <!-- FastClick -->
+        <script src="https://merchant.sslcommerz.com/web/sslcz-design/plugins/fastclick/fastclick.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="https://merchant.sslcommerz.com/web/sslcz-design/dist/js/app.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="https://merchant.sslcommerz.com/web/sslcz-design/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js"></script>
+        <!-- SlimScroll 1.3.0 -->
+        <script src="https://merchant.sslcommerz.com/web/sslcz-design/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#multiselect').multiselect({
+                    buttonWidth : '160px',
+                    includeSelectAllOption : true,
+                    nonSelectedText: 'Select an Option'
+                });
+            });
+
+            function getSelectedValues() {
+                var selectedVal = $("#multiselect").val();
+                console.log(selectedVal);
+                location.href= 'https://merchant.sslcommerz.com/?request=dashboard:view&store_list='+selectedVal;
+                /*for(var i=0; i<selectedVal.length; i++){
+                    function innerFunc(i) {
+                        setTimeout(function() {
+                            location.href = selectedVal[i];
+                        }, i*2000);
+                    }
+                    innerFunc(i);
+                }*/
+            }
+        </script>
+
+        <script>
+            $(function () {
+                /* ChartJS
+                 * -------
+                 * Here we will create a few charts using ChartJS
+                 */
+
+                //--------------
+                //- AREA CHART -
+                //--------------
+
+                // Get context with jQuery - using jQuery's .get() method.
+                var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var areaChart = new Chart(areaChartCanvas);
+
+
+                var areaChartData = {
+                    labels: ["06,Sep","07,Sep","08,Sep","09,Sep","10,Sep","11,Sep","12,Sep","13,Sep","14,Sep","15,Sep","16,Sep","17,Sep","18,Sep","19,Sep","20,Sep","21,Sep","22,Sep","23,Sep","24,Sep","25,Sep","26,Sep","27,Sep","28,Sep","29,Sep","30,Sep","01,Oct","02,Oct","03,Oct","04,Oct","05,Oct"],
+                    datasets: [{
+label:'DBBLMOBILEB',
+fillColor:"#f56954",
+pointHighlightFill:"#f56954",
+strokeColor:"#f56954",
+pointStrokeColor:"#f56954",
+pointColor:"#f56954",
+pointHighlightStroke:"#f56954",
+data:[3,3,1,1,4,0,0,1,1,0,1,1,0,0,1,1,3,1,0,1,3,3,2,0,1,1,0,0,0,0],
+},{
+label:'NEXUS',
+fillColor:"#01ff70",
+pointHighlightFill:"#01ff70",
+strokeColor:"#01ff70",
+pointStrokeColor:"#01ff70",
+pointColor:"#01ff70",
+pointHighlightStroke:"#01ff70",
+data:[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0],
+},{
+label:'BKASH',
+fillColor:"#3c8dbc",
+pointHighlightFill:"#3c8dbc",
+strokeColor:"#3c8dbc",
+pointStrokeColor:"#3c8dbc",
+pointColor:"#3c8dbc",
+pointHighlightStroke:"#3c8dbc",
+data:[33,35,18,36,36,4,5,47,35,22,38,28,12,6,31,29,19,22,29,11,7,38,22,32,45,35,11,14,27,16],
+},{
+label:'VISA',
+fillColor:"#3d9970",
+pointHighlightFill:"#3d9970",
+strokeColor:"#3d9970",
+pointStrokeColor:"#3d9970",
+pointColor:"#3d9970",
+pointHighlightStroke:"#3d9970",
+data:[2,3,4,1,0,4,2,2,0,5,3,1,1,2,2,1,1,5,1,0,2,2,2,1,4,0,0,0,0,1],
+},{
+label:'InstaPay',
+fillColor:"#d81b60",
+pointHighlightFill:"#d81b60",
+strokeColor:"#d81b60",
+pointStrokeColor:"#d81b60",
+pointColor:"#d81b60",
+pointHighlightStroke:"#d81b60",
+data:[1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+},{
+label:'NAGAD',
+fillColor:"#00a65a",
+pointHighlightFill:"#00a65a",
+strokeColor:"#00a65a",
+pointStrokeColor:"#00a65a",
+pointColor:"#00a65a",
+pointHighlightStroke:"#00a65a",
+data:[5,6,6,1,10,1,4,4,5,1,4,6,0,1,4,3,5,6,3,1,2,1,3,0,1,2,0,2,8,2],
+},{
+label:'NPSB',
+fillColor:"#f39c12",
+pointHighlightFill:"#f39c12",
+strokeColor:"#f39c12",
+pointStrokeColor:"#f39c12",
+pointColor:"#f39c12",
+pointHighlightStroke:"#f39c12",
+data:[8,6,1,3,3,0,0,2,2,3,2,9,0,1,1,7,5,5,2,0,0,7,8,8,7,5,0,1,8,1],
+},{
+label:'IBBL',
+fillColor:"#00c0ef",
+pointHighlightFill:"#00c0ef",
+strokeColor:"#00c0ef",
+pointStrokeColor:"#00c0ef",
+pointColor:"#00c0ef",
+pointHighlightStroke:"#00c0ef",
+data:[0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0],
+},{
+label:'MASTER',
+fillColor:"#605ca8",
+pointHighlightFill:"#605ca8",
+strokeColor:"#605ca8",
+pointStrokeColor:"#605ca8",
+pointColor:"#605ca8",
+pointHighlightStroke:"#605ca8",
+data:[0,2,2,1,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,1,0,1,0,1,0,0,1,0],
+},{
+label:'CITYBANKIB',
+fillColor:"#0073b7",
+pointHighlightFill:"#0073b7",
+strokeColor:"#0073b7",
+pointStrokeColor:"#0073b7",
+pointColor:"#0073b7",
+pointHighlightStroke:"#0073b7",
+data:[0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,3,0,1,0,0,0,0,0,0,0,1,1],
+},{
+label:'SBAC',
+fillColor:"#330099",
+pointHighlightFill:"#330099",
+strokeColor:"#330099",
+pointStrokeColor:"#330099",
+pointColor:"#330099",
+pointHighlightStroke:"#330099",
+data:[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0],
+},{
+label:'MTBL',
+fillColor:"#663333",
+pointHighlightFill:"#663333",
+strokeColor:"#663333",
+pointStrokeColor:"#663333",
+pointColor:"#663333",
+pointHighlightStroke:"#663333",
+data:[0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+},{
+label:'PATHAOPAY',
+fillColor:"#666633",
+pointHighlightFill:"#666633",
+strokeColor:"#666633",
+pointStrokeColor:"#666633",
+pointColor:"#666633",
+pointHighlightStroke:"#666633",
+data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0],
+}],
+                };
+
+                var areaChartOptions = {
+                    //Boolean - If we should show the scale at all
+                    showScale: true,
+                    //Boolean - Whether grid lines are shown across the chart
+                    scaleShowGridLines: false,
+                    //String - Colour of the grid lines
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    //Number - Width of the grid lines
+                    scaleGridLineWidth: 1,
+                    //Boolean - Whether to show horizontal lines (except X axis)
+                    scaleShowHorizontalLines: true,
+                    //Boolean - Whether to show vertical lines (except Y axis)
+                    scaleShowVerticalLines: true,
+                    //Boolean - Whether the line is curved between points
+                    bezierCurve: true,
+                    //Number - Tension of the bezier curve between points
+                    bezierCurveTension: 0.3,
+                    //Boolean - Whether to show a dot for each point
+                    pointDot: false,
+                    //Number - Radius of each point dot in pixels
+                    pointDotRadius: 4,
+                    //Number - Pixel width of point dot stroke
+                    pointDotStrokeWidth: 1,
+                    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                    pointHitDetectionRadius: 20,
+                    //Boolean - Whether to show a stroke for datasets
+                    datasetStroke: true,
+                    //Number - Pixel width of dataset stroke
+                    datasetStrokeWidth: 2,
+                    //Boolean - Whether to fill the dataset with a color
+                    datasetFill: true,
+                    //String - A legend template
+                    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><p><%if(datasets[i].label){%><%=datasets[i].label%><%}%></p></li><%}%></ul>",
+                    //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                    maintainAspectRatio: true,
+                    //Boolean - whether to make the chart responsive to window resizing
+                    responsive: true
+                };
+                areaChartOptions.datasetFill = false;
+                //Create the line chart
+                var withLegend = areaChart.Line(areaChartData, areaChartOptions);
+                document.getElementById('TheLegendOfDeviceChart').innerHTML = withLegend.generateLegend();
+
+                //--------------
+                //- AREA CHART -
+                //--------------
+
+                // Get context with jQuery - using jQuery's .get() method.
+                var areaChart2Canvas = $("#areaChart2").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var areaChart2 = new Chart(areaChart2Canvas);
+
+                var areaChart2Data = {
+                    labels: ["06,Sep","07,Sep","08,Sep","09,Sep","10,Sep","11,Sep","12,Sep","13,Sep","14,Sep","15,Sep","16,Sep","17,Sep","18,Sep","19,Sep","20,Sep","21,Sep","22,Sep","23,Sep","24,Sep","25,Sep","26,Sep","27,Sep","28,Sep","29,Sep","30,Sep","01,Oct","02,Oct","03,Oct","04,Oct","05,Oct"],
+                    datasets: [{
+label:'DBBLMOBILEB',
+fillColor:"#f56954",
+pointHighlightFill:"#f56954",
+strokeColor:"#f56954",
+pointStrokeColor:"#f56954",
+pointColor:"#f56954",
+pointHighlightStroke:"#f56954",
+data:[7624,1423,5083,1017,1480,0,0,4361,219,0,1017,305,0,0,203,152,6495,102,0,152,813,1199,1006,0,89,203,0,0,0,0],
+},{
+label:'NEXUS',
+fillColor:"#01ff70",
+pointHighlightFill:"#01ff70",
+strokeColor:"#01ff70",
+pointStrokeColor:"#01ff70",
+pointColor:"#01ff70",
+pointHighlightStroke:"#01ff70",
+data:[102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,153,0,0,51000,0,0,0,0],
+},{
+label:'BKASH',
+fillColor:"#3c8dbc",
+pointHighlightFill:"#3c8dbc",
+strokeColor:"#3c8dbc",
+pointStrokeColor:"#3c8dbc",
+pointColor:"#3c8dbc",
+pointHighlightStroke:"#3c8dbc",
+data:[55093,91998,127606,34675,116018,1118,31257,138471,78676,29010,124868,64610,15819,37712,79897,52053,36792,11273,56177,15146,11060,57652,47170,67561,79094,123708,3756,18797,74688,56794],
+},{
+label:'VISA',
+fillColor:"#3d9970",
+pointHighlightFill:"#3d9970",
+strokeColor:"#3d9970",
+pointStrokeColor:"#3d9970",
+pointColor:"#3d9970",
+pointHighlightStroke:"#3d9970",
+data:[61290,26150,95510,153,0,117401,5118,664,0,155288,6435,183870,153,10324,3167,2043,2043,46121,2043,0,10368,43107,55161,153,970,0,0,0,0,5108],
+},{
+label:'InstaPay',
+fillColor:"#d81b60",
+pointHighlightFill:"#d81b60",
+strokeColor:"#d81b60",
+pointStrokeColor:"#d81b60",
+pointColor:"#d81b60",
+pointHighlightStroke:"#d81b60",
+data:[1017,0,0,0,10165,0,0,0,101650,0,0,0,0,0,101650,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+},{
+label:'NAGAD',
+fillColor:"#00a65a",
+pointHighlightFill:"#00a65a",
+strokeColor:"#00a65a",
+pointStrokeColor:"#00a65a",
+pointColor:"#00a65a",
+pointHighlightStroke:"#00a65a",
+data:[2017,15807,11334,3050,16390,152,1454,2795,5586,407,3678,28970,0,1271,5882,1321,1146,2643,10228,152,305,9149,520,0,5669,173,0,2570,62381,9525],
+},{
+label:'NPSB',
+fillColor:"#f39c12",
+pointHighlightFill:"#f39c12",
+strokeColor:"#f39c12",
+pointStrokeColor:"#f39c12",
+pointColor:"#f39c12",
+pointHighlightStroke:"#f39c12",
+data:[144098,5877,1012,101282,2185,0,0,5058,1163,50727,1163,19138,0,152,2023,6345,10280,1032,5059,0,0,6306,11607,6463,17252,2673,0,10115,3671,152],
+},{
+label:'IBBL',
+fillColor:"#00c0ef",
+pointHighlightFill:"#00c0ef",
+strokeColor:"#00c0ef",
+pointStrokeColor:"#00c0ef",
+pointColor:"#00c0ef",
+pointHighlightStroke:"#00c0ef",
+data:[0,254,0,0,0,0,0,0,0,1018,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2035,0,0,0,0,0],
+},{
+label:'MASTER',
+fillColor:"#605ca8",
+pointHighlightFill:"#605ca8",
+strokeColor:"#605ca8",
+pointStrokeColor:"#605ca8",
+pointColor:"#605ca8",
+pointHighlightStroke:"#605ca8",
+data:[0,5261,306,163,0,153,0,0,0,0,0,51075,0,0,0,1022,0,0,0,0,0,511,0,20430,0,153,0,0,66398,0],
+},{
+label:'CITYBANKIB',
+fillColor:"#0073b7",
+pointHighlightFill:"#0073b7",
+strokeColor:"#0073b7",
+pointStrokeColor:"#0073b7",
+pointColor:"#0073b7",
+pointHighlightStroke:"#0073b7",
+data:[0,0,0,0,0,0,0,1015,0,0,0,121800,0,0,0,0,2030,1015,1726,0,10150,0,0,0,0,0,0,0,508,30450],
+},{
+label:'SBAC',
+fillColor:"#330099",
+pointHighlightFill:"#330099",
+strokeColor:"#330099",
+pointStrokeColor:"#330099",
+pointColor:"#330099",
+pointHighlightStroke:"#330099",
+data:[0,0,0,0,0,0,0,0,529,0,0,0,0,0,0,0,0,0,0,0,0,305,0,0,0,0,0,0,0,0],
+},{
+label:'MTBL',
+fillColor:"#663333",
+pointHighlightFill:"#663333",
+strokeColor:"#663333",
+pointStrokeColor:"#663333",
+pointColor:"#663333",
+pointHighlightStroke:"#663333",
+data:[0,0,0,0,0,0,0,0,0,0,0,0,1423,0,508,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+},{
+label:'PATHAOPAY',
+fillColor:"#666633",
+pointHighlightFill:"#666633",
+strokeColor:"#666633",
+pointStrokeColor:"#666633",
+pointColor:"#666633",
+pointHighlightStroke:"#666633",
+data:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10165,0,0,0,0,0,0],
+}],
+                };
+
+                var areaChart2Options = {
+                    //Boolean - If we should show the scale at all
+                    showScale: true,
+                    //Boolean - Whether grid lines are shown across the chart
+                    scaleShowGridLines: false,
+                    //String - Colour of the grid lines
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    //Number - Width of the grid lines
+                    scaleGridLineWidth: 1,
+                    //Boolean - Whether to show horizontal lines (except X axis)
+                    scaleShowHorizontalLines: true,
+                    //Boolean - Whether to show vertical lines (except Y axis)
+                    scaleShowVerticalLines: true,
+                    //Boolean - Whether the line is curved between points
+                    bezierCurve: true,
+                    //Number - Tension of the bezier curve between points
+                    bezierCurveTension: 0.3,
+                    //Boolean - Whether to show a dot for each point
+                    pointDot: false,
+                    //Number - Radius of each point dot in pixels
+                    pointDotRadius: 4,
+                    //Number - Pixel width of point dot stroke
+                    pointDotStrokeWidth: 1,
+                    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                    pointHitDetectionRadius: 20,
+                    //Boolean - Whether to show a stroke for datasets
+                    datasetStroke: true,
+                    //Number - Pixel width of dataset stroke
+                    datasetStrokeWidth: 2,
+                    //Boolean - Whether to fill the dataset with a color
+                    datasetFill: true,
+                    //String - A legend template
+                    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><p><%if(datasets[i].label){%><%=datasets[i].label%><%}%></p></li><%}%></ul>",
+                    //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                    maintainAspectRatio: true,
+                    //Boolean - whether to make the chart responsive to window resizing
+                    responsive: true
+                };
+                areaChart2Options.datasetFill = false;
+                //Create the line chart
+                var withLegends = areaChart2.Line(areaChart2Data, areaChart2Options);
+                document.getElementById('TheLegendOfDeviceChart2').innerHTML = withLegends.generateLegend();
+
+                //--------------
+                //- AREA CHART -
+                //--------------
+
+                // Get context with jQuery - using jQuery's .get() method.
+                var areaChart3Canvas = $("#areaChart3").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var areaChart3 = new Chart(areaChart3Canvas);
+
+                var areaChart3Data = {
+                    labels: ["12:00:00am","01:00:00am","02:00:00am","05:00:00am","07:00:00am","08:00:00am","09:00:00am","10:00:00am"],
+                    datasets: [
+                        {
+                            label: "Digital Goods",
+                            fillColor: "rgba(255,255,255,1)",
+                            strokeColor: "rgba(60,141,188,0.8)",
+                            pointColor: "#3b8bba",
+                            pointStrokeColor: "rgba(60,141,188,1)",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(60,141,188,1)",
+                            data: [0,1,1,1,0,0,6,1]                        }
+                    ]
+                };
+
+                var areaChart3Options = {
+                    //Boolean - If we should show the scale at all
+                    showScale: true,
+                    //Boolean - Whether grid lines are shown across the chart
+                    scaleShowGridLines: false,
+                    //String - Colour of the grid lines
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    //Number - Width of the grid lines
+                    scaleGridLineWidth: 1,
+                    //Boolean - Whether to show horizontal lines (except X axis)
+                    scaleShowHorizontalLines: true,
+                    //Boolean - Whether to show vertical lines (except Y axis)
+                    scaleShowVerticalLines: true,
+                    //Boolean - Whether the line is curved between points
+                    bezierCurve: true,
+                    //Number - Tension of the bezier curve between points
+                    bezierCurveTension: 0.3,
+                    //Boolean - Whether to show a dot for each point
+                    pointDot: false,
+                    //Number - Radius of each point dot in pixels
+                    pointDotRadius: 4,
+                    //Number - Pixel width of point dot stroke
+                    pointDotStrokeWidth: 1,
+                    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                    pointHitDetectionRadius: 20,
+                    //Boolean - Whether to show a stroke for datasets
+                    datasetStroke: true,
+                    //Number - Pixel width of dataset stroke
+                    datasetStrokeWidth: 2,
+                    //Boolean - Whether to fill the dataset with a color
+                    datasetFill: true,
+                    //String - A legend template
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                    //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                    maintainAspectRatio: true,
+                    //Boolean - whether to make the chart responsive to window resizing
+                    responsive: true
+                };
+                areaChart3Options.datasetFill = false;
+                //Create the line chart
+                areaChart3.Line(areaChart3Data, areaChart3Options);
+
+                //--------------
+                //- AREA CHART -
+                //--------------
+
+                // Get context with jQuery - using jQuery's .get() method.
+                var areaChart4Canvas = $("#areaChart4").get(0).getContext("2d");
+                // This will get the first returned node in the jQuery collection.
+                var areaChart4 = new Chart(areaChart4Canvas);
+
+                var areaChart4Data = {
+                    labels: ["12:00:00am","01:00:00am","02:00:00am","05:00:00am","07:00:00am","08:00:00am","09:00:00am","10:00:00am"],
+                    datasets: [
+                        {
+                            label: "Digital Goods",
+                            fillColor: "rgba(255,255,255,1)",
+                            strokeColor: "rgba(255,201,51,0.9)",
+                            pointColor: "#3b8bba",
+                            pointStrokeColor: "rgba(60,141,188,1)",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(60,141,188,1)",
+                            data: [0,152,3050,1728,0,0,70978,508]                        }
+                    ]
+                };
+
+                var areaChart4Options = {
+                    //Boolean - If we should show the scale at all
+                    showScale: true,
+                    //Boolean - Whether grid lines are shown across the chart
+                    scaleShowGridLines: false,
+                    //String - Colour of the grid lines
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    //Number - Width of the grid lines
+                    scaleGridLineWidth: 1,
+                    //Boolean - Whether to show horizontal lines (except X axis)
+                    scaleShowHorizontalLines: true,
+                    //Boolean - Whether to show vertical lines (except Y axis)
+                    scaleShowVerticalLines: true,
+                    //Boolean - Whether the line is curved between points
+                    bezierCurve: true,
+                    //Number - Tension of the bezier curve between points
+                    bezierCurveTension: 0.3,
+                    //Boolean - Whether to show a dot for each point
+                    pointDot: false,
+                    //Number - Radius of each point dot in pixels
+                    pointDotRadius: 4,
+                    //Number - Pixel width of point dot stroke
+                    pointDotStrokeWidth: 1,
+                    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+                    pointHitDetectionRadius: 20,
+                    //Boolean - Whether to show a stroke for datasets
+                    datasetStroke: true,
+                    //Number - Pixel width of dataset stroke
+                    datasetStrokeWidth: 2,
+                    //Boolean - Whether to fill the dataset with a color
+                    datasetFill: true,
+                    //String - A legend template
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].lineColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                    //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                    maintainAspectRatio: true,
+                    //Boolean - whether to make the chart responsive to window resizing
+                    responsive: true
+                };
+                areaChart4Options.datasetFill = false;
+                //Create the line chart
+                areaChart4.Line(areaChart4Data, areaChart4Options);
+
+
+                //-------------
+                //- BAR CHART -
+                //-------------
+
+                var barChartCanvas = $("#barChart_trans").get(0).getContext("2d");
+                var barChart = new Chart(barChartCanvas);
+                var barChartData = {
+                    labels: ["06,Sep","07,Sep","08,Sep","09,Sep","10,Sep","11,Sep","12,Sep","13,Sep","14,Sep","15,Sep","16,Sep","17,Sep","18,Sep","19,Sep","20,Sep","21,Sep","22,Sep","23,Sep","24,Sep","25,Sep","26,Sep","27,Sep","28,Sep","29,Sep","30,Sep","01,Oct","02,Oct","03,Oct","04,Oct","05,Oct"],
+                    datasets: [
+                        {
+                            label: "Digital Goods",
+                            fillColor: "rgba(60,141,188,0.9)",
+                            strokeColor: "rgba(60,141,188,0.8)",
+                            pointColor: "#3b8bba",
+                            pointStrokeColor: "rgba(60,141,188,1)",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(60,141,188,1)",
+                            data: [53,56,32,43,54,10,11,57,45,32,48,47,14,10,41,42,34,40,38,13,15,53,38,43,59,45,11,17,45,21]                        }
+                    ]
+                };
+                barChartData.datasets[0].fillColor = "#00a65a";
+                barChartData.datasets[0].strokeColor = "#00a65a";
+                barChartData.datasets[0].pointColor = "#00a65a";
+                var barChartOptions = {
+                    //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                    scaleBeginAtZero: true,
+                    //Boolean - Whether grid lines are shown across the chart
+                    scaleShowGridLines: true,
+                    //String - Colour of the grid lines
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    //Number - Width of the grid lines
+                    scaleGridLineWidth: 1,
+                    //Boolean - Whether to show horizontal lines (except X axis)
+                    scaleShowHorizontalLines: true,
+                    //Boolean - Whether to show vertical lines (except Y axis)
+                    scaleShowVerticalLines: true,
+                    //Boolean - If there is a stroke on each bar
+                    barShowStroke: true,
+                    //Number - Pixel width of the bar stroke
+                    barStrokeWidth: 2,
+                    //Number - Spacing between each of the X value sets
+                    barValueSpacing: 5,
+                    //Number - Spacing between data sets within X values
+                    barDatasetSpacing: 1,
+                    //String - A legend template
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                    //Boolean - whether to make the chart responsive
+                    responsive: true,
+                    maintainAspectRatio: true
+                };
+
+                barChartOptions.datasetFill = false;
+                barChart.Bar(barChartData, barChartOptions);
+
+
+                //-------------
+                //- BAR CHART -
+                //-------------
+                var barChartCanvas1 = $("#barChart_amount").get(0).getContext("2d");
+                var barChart1 = new Chart(barChartCanvas1);
+                var barChartData1 = {
+                    labels: ["06,Sep","07,Sep","08,Sep","09,Sep","10,Sep","11,Sep","12,Sep","13,Sep","14,Sep","15,Sep","16,Sep","17,Sep","18,Sep","19,Sep","20,Sep","21,Sep","22,Sep","23,Sep","24,Sep","25,Sep","26,Sep","27,Sep","28,Sep","29,Sep","30,Sep","01,Oct","02,Oct","03,Oct","04,Oct","05,Oct"],
+                    datasets: [
+                        {
+                            label: "Digital Goods",
+                            fillColor: "rgba(60,141,188,0.9)",
+                            strokeColor: "rgba(60,141,188,0.8)",
+                            pointColor: "#3b8bba",
+                            pointStrokeColor: "rgba(60,141,188,1)",
+                            pointHighlightFill: "#fff",
+                            pointHighlightStroke: "rgba(60,141,188,1)",
+                            data: [271241,146770,240851,140340,146238,118825,37829,152363,187822,236450,137161,469768,17395,49459,193331,62937,58786,62185,75232,15451,32696,118229,115618,104772,105110,177911,3756,31482,207645,102028]                        }
+                    ]
+                };
+                barChartData1.datasets[0].fillColor = "#00a65a";
+                barChartData1.datasets[0].strokeColor = "#00a65a";
+                barChartData1.datasets[0].pointColor = "#00a65a";
+                var barChartOptions1 = {
+                    //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                    scaleBeginAtZero: true,
+                    //Boolean - Whether grid lines are shown across the chart
+                    scaleShowGridLines: true,
+                    //String - Colour of the grid lines
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    //Number - Width of the grid lines
+                    scaleGridLineWidth: 1,
+                    //Boolean - Whether to show horizontal lines (except X axis)
+                    scaleShowHorizontalLines: true,
+                    //Boolean - Whether to show vertical lines (except Y axis)
+                    scaleShowVerticalLines: true,
+                    //Boolean - If there is a stroke on each bar
+                    barShowStroke: true,
+                    //Number - Pixel width of the bar stroke
+                    barStrokeWidth: 2,
+                    //Number - Spacing between each of the X value sets
+                    barValueSpacing: 5,
+                    //Number - Spacing between data sets within X values
+                    barDatasetSpacing: 1,
+                    //String - A legend template
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                    //Boolean - whether to make the chart responsive
+                    responsive: true,
+                    maintainAspectRatio: true
+                };
+
+                barChartOptions1.datasetFill = false;
+                barChart1.Bar(barChartData1, barChartOptions1);
+
+                //-------------
+                //- PIE CHART -
+                //-------------
+                // Get context with jQuery - using jQuery's .get() method.
+                var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+                var pieChart = new Chart(pieChartCanvas);
+                var PieData = [
+                    {
+value:70,
+color:"#f56954",
+highlight:"#f56954",
+label:"BKASH",
+},{
+value:10,
+color:"#01ff70",
+highlight:"#01ff70",
+label:"NPSB",
+},{
+value:10,
+color:"#3c8dbc",
+highlight:"#3c8dbc",
+label:"NAGAD",
+},{
+value:5,
+color:"#3d9970",
+highlight:"#3d9970",
+label:"VISA",
+},{
+value:4,
+color:"#d81b60",
+highlight:"#d81b60",
+label:"DBBLMOBILEB",
+},{
+value:2,
+color:"#00a65a",
+highlight:"#00a65a",
+label:"MASTER",
+},{
+value:1,
+color:"#f39c12",
+highlight:"#f39c12",
+label:"CITYBANKIB",
+},{
+value:1,
+color:"#00c0ef",
+highlight:"#00c0ef",
+label:"InstaPay",
+},{
+value:1,
+color:"#605ca8",
+highlight:"#605ca8",
+label:"NEXUS",
+},{
+value:1,
+color:"#0073b7",
+highlight:"#0073b7",
+label:"IBBL",
+},{
+value:1,
+color:"#330099",
+highlight:"#330099",
+label:"SBAC",
+},{
+value:1,
+color:"#663333",
+highlight:"#663333",
+label:"MTBL",
+},{
+value:1,
+color:"#666633",
+highlight:"#666633",
+label:"PATHAOPAY",
+}                ];
+                var pieOptions = {
+                    //Boolean - Whether we should show a stroke on each segment
+                    segmentShowStroke: true,
+                    //String - The colour of each segment stroke
+                    segmentStrokeColor: "#fff",
+                    //Number - The width of each segment stroke
+                    segmentStrokeWidth: 1,
+                    //Number - The percentage of the chart that we cut out of the middle
+                    percentageInnerCutout: 50, // This is 0 for Pie charts
+                    //Number - Amount of animation steps
+                    animationSteps: 100,
+                    //String - Animation easing effect
+                    animationEasing: "easeOutBounce",
+                    //Boolean - Whether we animate the rotation of the Doughnut
+                    animateRotate: true,
+                    //Boolean - Whether we animate scaling the Doughnut from the centre
+                    animateScale: false,
+                    //Boolean - whether to make the chart responsive to window resizing
+                    responsive: true,
+                    // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                    maintainAspectRatio: false,
+                    //String - A legend template
+                    legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
+                    //String - A tooltip template
+                    tooltipTemplate: " <%=label%> - <%=value %>%"
+                };
+                //Create pie or douhnut chart
+                // You can switch between pie and douhnut using the method below.
+                pieChart.Doughnut(PieData, pieOptions);
+                //-----------------
+                //- END PIE CHART -
+                //-----------------
+
+            });
+
+        </script>
+
+        
+        
+        <div class="ibot_ssl_dom">
+        
+    
+        <div id="ssl_bot_dom" class="ssl_bot_dom ssl_only_chat_btn">
+        <style>.ssl_chat_trigger[data-tooltip-text]:hover::before {
+            opacity: 1;
+            background: #000 !important;
+            font-weight: 800;
+            font-size: 14px;
+        }
+        </style>
+            <button id="ssl_chat_trigger" class="ssl_chat_trigger " type="button" name="button" style="background:#2a5dab">
+                
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+                <g id="Iconly_Bold_Chat" data-name="Iconly/Bold/Chat" transform="translate(-3 -3)">
+                <g id="Chat" transform="translate(3.4 3.4)">
+                    <path id="Chat-2" data-name="Chat" d="M14,28a13.937,13.937,0,0,1-6.888-1.822,3.078,3.078,0,0,0-1.55-.594,1.7,1.7,0,0,0-.536.089L2.2,26.514a1.055,1.055,0,0,1-.317.05.867.867,0,0,1-.7-.335.906.906,0,0,1-.132-.809l.939-3.141a1.464,1.464,0,0,0-.1-1.261,14.793,14.793,0,0,1-1.89-7A14.221,14.221,0,0,1,3.964,4.245,13.846,13.846,0,0,1,14.028,0,13.811,13.811,0,0,1,24,4.192a14.081,14.081,0,0,1,2.939,4.455A13.846,13.846,0,0,1,28,13.979a14.194,14.194,0,0,1-1.211,5.841A13.438,13.438,0,0,1,23.6,24.234,14.343,14.343,0,0,1,14,28Zm6.426-15.759a1.794,1.794,0,1,0,1.792,1.794A1.8,1.8,0,0,0,20.426,12.241Zm-6.481,0a1.775,1.775,0,0,0-1.765,1.781,1.792,1.792,0,1,0,1.792-1.78h-.027Zm-6.427,0A1.794,1.794,0,1,0,9.31,14.035,1.8,1.8,0,0,0,7.518,12.241Z" transform="translate(-0.4 -0.4)" fill="#fff"></path>
+                </g>
+                </g>
+            </svg>
+    
+    
+            </button>  
+
+        <iframe class="ssl_bot_dom_iframe" id="ssl_bot_dom_iframe" frameborder="0" title="SSL Chat Widget" allowfullscreen="" srcdoc="
+    
+    
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1&quot;&gt;
+  &lt;meta name=&quot;description&quot; content=&quot;ibot&quot;&gt;
+  &lt;meta name=&quot;author&quot; content=&quot;ssl wireless&quot;&gt;
+
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/swiper/swiper-bundle.min.css&quot;/&gt;
+  &lt;link href='https://fonts.googleapis.com/css2?family=Muli:wght@400;500;600;700;900&amp;display=swap' rel='stylesheet'&gt;
+  &lt;link href='https://ibot.sslwireless.com/webcdn/v2/main.css?v=e5xvk' rel='stylesheet'&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css&quot;
+/&gt;
+  &lt;title&gt;SSLCOMMERZ&lt;/title&gt;
+  &lt;style&gt;
+    .d_none{
+      display: none!important;
+    }
+    .d_block{
+      display: block!important;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class=&quot;ssl_chat_wrapper&quot; id=&quot;chatPop&quot;&gt;
+   
+    &lt;div class=&quot;ssl_chat_header&quot;&gt;
+      
+&lt;div class=&quot;ssl_chat_header_left&quot;&gt;
+        
+        &lt;div class=&quot;ssl_chat_header_left_logo&quot;&gt;
+          &lt;div class=&quot;ssl_chat_header_left_logo_wrap&quot;&gt;
+            &lt;div class=&quot;ssl_chat_client_logo_big&quot;&gt;
+              &lt;img src=&quot;https://ibot.sslwireless.com/fcom/product/_387625.png&quot; alt=&quot;&quot;&gt;
+              &lt;h3&gt;SSLCOMMERZ&lt;/h3&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div id=&quot;ssl_chat_header_right&quot; class=&quot;ssl_chat_header_right&quot;&gt;
+      &lt;button  class=&quot;ssl_chat_btn_reset&quot; type=&quot;button&quot; name=&quot;button&quot; onclick=&quot;&quot;&gt;
+      &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;26&quot; height=&quot;26&quot; viewBox=&quot;0 0 26 26&quot;&gt;
+        &lt;g id=&quot;Group_36&quot; data-name=&quot;Group 36&quot; transform=&quot;translate(-2504 1526)&quot;&gt;
+          &lt;circle id=&quot;Ellipse_1&quot; data-name=&quot;Ellipse 1&quot; cx=&quot;13&quot; cy=&quot;13&quot; r=&quot;13&quot; transform=&quot;translate(2504 -1526)&quot; fill=&quot;rgba(255,255,255,0.15)&quot;/&gt;
+          &lt;g id=&quot;Page-1&quot; transform=&quot;translate(2431.2 -1562.4)&quot;&gt;
+            &lt;g id=&quot;fs_frankbot&quot; transform=&quot;translate(80.8 43.4)&quot;&gt;
+              &lt;g id=&quot;Page-1-Copy-2&quot; transform=&quot;translate(0 0)&quot;&gt;
+                &lt;g id=&quot;Group-7&quot;&gt;
+                  &lt;path id=&quot;Fill-5&quot; d=&quot;M114.052,48.378a4.182,4.182,0,0,0-3.734-2.337h-1.992l1.483-1.511a.672.672,0,0,0,0-.937.637.637,0,0,0-.916,0l-2.58,2.639a.67.67,0,0,0,0,.931l2.58,2.639a.634.634,0,0,0,.913,0,.671.671,0,0,0,0-.934l-1.483-1.511h1.992a2.97,2.97,0,0,1,.008,5.938,2.879,2.879,0,0,1-.908-.147l-.251-.085,0,.008a.629.629,0,0,0-.259-.057.638.638,0,0,0-.631.644.645.645,0,0,0,.44.616l-.005.013c.135.057.269.106.409.15a4.082,4.082,0,0,0,3.113-.29,4.34,4.34,0,0,0,1.822-5.773&quot; transform=&quot;translate(-105.47 -43.4)&quot; fill=&quot;#fff&quot;/&gt;
+                  &lt;path id=&quot;Fill-1&quot; d=&quot;M82.083,341.442a.642.642,0,1,0-.642.642.642.642,0,0,0,.642-.642&quot; transform=&quot;translate(-80.8 -333.105)&quot; fill=&quot;#fff&quot;/&gt;
+                  &lt;path id=&quot;Fill-3&quot; d=&quot;M131.042,390.3a.642.642,0,1,0,.642.642.642.642,0,0,0-.642-.642&quot; transform=&quot;translate(-129.117 -381.324)&quot; fill=&quot;#fff&quot;/&gt;
+                &lt;/g&gt;
+              &lt;/g&gt;
+            &lt;/g&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+      
+      
+    &lt;button class=&quot;&quot; type=&quot;button&quot; name=&quot;button&quot; onclick=&quot;closeFunction(true)&quot;&gt;
+          &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;26&quot; height=&quot;26&quot; viewBox=&quot;0 0 26 26&quot;&gt;
+            &lt;g id=&quot;Group_589&quot; data-name=&quot;Group 589&quot; transform=&quot;translate(-1360 -188)&quot;&gt;
+              &lt;circle id=&quot;Ellipse_2784&quot; data-name=&quot;Ellipse 2784&quot; cx=&quot;13&quot; cy=&quot;13&quot; r=&quot;13&quot; transform=&quot;translate(1360 188)&quot; fill=&quot;rgba(255,255,255,0.15)&quot;/&gt;
+              &lt;g id=&quot;Group_574&quot; data-name=&quot;Group 574&quot; transform=&quot;translate(1369.013 197.045)&quot;&gt;
+                &lt;line id=&quot;Line_9&quot; data-name=&quot;Line 9&quot; x2=&quot;8.288&quot; y2=&quot;8.288&quot; transform=&quot;translate(0 0)&quot; fill=&quot;none&quot; stroke=&quot;#fff&quot; stroke-width=&quot;1.5&quot;/&gt;
+                &lt;line id=&quot;Line_10&quot; data-name=&quot;Line 10&quot; x1=&quot;8.288&quot; y2=&quot;8.288&quot; transform=&quot;translate(0 0)&quot; fill=&quot;none&quot; stroke=&quot;#fff&quot; stroke-width=&quot;1.5&quot;/&gt;
+              &lt;/g&gt;
+            &lt;/g&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+   
+
+    &lt;!-- Chat Box --&gt;
+    
+     &lt;div class=&quot; ssl_chat_area&quot; id=&quot;ssl_chat_area&quot;&gt;
+      &lt;div class=&quot;ssl_chat_body&quot; id=&quot;ssl_chat_body&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+
+    &lt;div class=&quot;ssl_chat_footer&quot; id=&quot;ssl_chat_footer&quot; style=display:flex&gt;
+  &lt;div class=&quot;ssl_chat_footer_left&quot;  style=display:flex&gt;
+    &lt;input type=&quot;file&quot; class=&quot;attachment_upload_input_ssl&quot; hidden accept=&quot;.png, .jpg, .jpeg , .pdf, .xlx,.xlsx&quot; /&gt;
+    &lt;button class=&quot;attachment_upload_btn_ssl&quot; type=&quot;button&quot; name=&quot;button&quot;&gt;
+      &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;26&quot; height=&quot;26&quot; viewBox=&quot;0 0 26 26&quot;&gt;
+        &lt;g id=&quot;Plus&quot; transform=&quot;translate(0.432 0.432)&quot;&gt;
+          &lt;path id=&quot;Plus-2&quot; data-name=&quot;Plus&quot; d=&quot;M19.071,26H6.929A6.954,6.954,0,0,1,1.8,24.188,6.962,6.962,0,0,1,0,19.071V6.929A6.966,6.966,0,0,1,1.8,1.8,6.966,6.966,0,0,1,6.929,0h12.13a6.984,6.984,0,0,1,5.128,1.8A6.948,6.948,0,0,1,26,6.929V19.071C26,23.475,23.475,26,19.071,26ZM8.229,11.908A1.065,1.065,0,0,0,7.15,12.987a1.09,1.09,0,0,0,1.079,1.092h3.68v3.68a1.079,1.079,0,1,0,2.158,0v-3.68h3.693a1.085,1.085,0,0,0,0-2.17H14.066V8.242a1.079,1.079,0,1,0-2.158,0v3.667Z&quot; transform=&quot;translate(-0.432 -0.432)&quot; fill=&quot;#2a5dab&quot;&quot;/&gt;
+        &lt;/g&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ssl_chat_footer_center&quot;&gt;
+    &lt;input id=&quot;text_input&quot; type=&quot;text&quot; name=&quot;text_input&quot; &gt;
+    &lt;div class=&quot;ssl_chat_input_area&quot;&gt;
+      &lt;div class=&quot;ssl_chat_box_attachment&quot;&gt;
+      
+      &lt;/div&gt;
+      &lt;div class=&quot;ssl_chat_input_area_inner&quot; contenteditable=&quot;&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+   &lt;div class='emoj_block_ssl' style=&quot;display:none&quot;&gt; &lt;emoji-picker&gt;&lt;/emoji-picker&gt;&lt;/div&gt;
+    &lt;button class=&quot;ssl_imoji&quot; type=&quot;button&quot; name=&quot;button&quot; style=display:flex&gt;
+      &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;23&quot; height=&quot;23&quot; viewBox=&quot;0 0 23 23&quot;&gt;
+        &lt;path fill=&quot;#2a5dab&quot;&quot; d=&quot;M11.5 0A11.5 11.5 0 1 0 23 11.5 11.5 11.5 0 0 0 11.5 0zm3.842 7.4a1.769 1.769 0 1 1-1.769 1.769A1.769 1.769 0 0 1 15.342 7.4zm-7.685 0a1.769 1.769 0 1 1-1.769 1.774A1.769 1.769 0 0 1 7.658 7.4zM11.5 18.7a7.235 7.235 0 0 1-6.761-4.718l1.423-.525a5.687 5.687 0 0 0 10.676 0l1.423.525A7.235 7.235 0 0 1 11.5 18.7z&quot;&gt;&lt;/path&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;ssl_chat_footer_right&quot;&gt;
+    &lt;button class=&quot;send_message_btn&quot; type=&quot;button&quot; name=&quot;button&quot;&gt;
+      &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;26.004&quot; height=&quot;25.998&quot; viewBox=&quot;0 0 26.004 25.998&quot;&gt;
+        &lt;g id=&quot;send&quot; transform=&quot;translate(0 -35.11)&quot;&gt;
+          &lt;g id=&quot;Group_614&quot; data-name=&quot;Group 614&quot; transform=&quot;translate(0.001 35.111)&quot;&gt;
+            &lt;path id=&quot;Path_1295&quot; data-name=&quot;Path 1295&quot; d=&quot;M24.456,45.422,3.475,35.335a2.236,2.236,0,0,0-2.606.488,3.184,3.184,0,0,0-.79,2.919l1.867,8.485H11.09a.892.892,0,0,1,0,1.766H1.947L.08,57.478A3.184,3.184,0,0,0,.869,60.4a2.236,2.236,0,0,0,2.606.488L24.456,50.8a3.106,3.106,0,0,0,0-5.375Z&quot; transform=&quot;translate(-0.001 -35.111)&quot; fill=&quot;#2a5dab&quot;&quot;/&gt;
+          &lt;/g&gt;
+        &lt;/g&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+  &lt;/div&gt;
+
+  &lt;script type=&quot;application/javascript&quot; src=&quot;https://unpkg.com/swiper/swiper-bundle.min.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script type=&quot;application/javascript&quot;  src=&quot;https://ibot.sslwireless.com/webcdn/v2//custom.js?v=jwwse&quot; id=&quot;asset_url_external&quot; data-logo=https://ibot.sslwireless.com/fcom/product/_387625.png asset_url=https://ibot.sslwireless.com/webcdn/v2/ client_key=ssl-5be38b96-2e19-423f sender_id=6ac336e4de423&gt;&lt;/script&gt;
+
+    &lt;script type=&quot;module&quot; src=&quot;https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js&quot;&gt;&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+    
+    " style="z-index: 999;"></iframe></div>  
+    <style>.bot_card_top {
+  width: 340px;
+  height: 110px;
+  box-shadow: 2px 15px 20px 0 rgb(0 0 0 / 6%);
+  border-radius: 10px;
+  position: fixed;
+  bottom: 130px;
+  right: 46px;
+  background-color: white;
+  z-index: 99999;
+}
+
+.bot_card_header {
+  display: flex;
+  justify-content: center;
+  bottom: 33px;
+  position: relative;
+}
+
+.bot_card_header img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  box-shadow: 2px 15px 20px 0 rgb(0 0 0 / 6%);
+  background: white;
+}
+
+.bot_card_body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 280px;
+  margin: 0 auto;
+  bottom: 42px;
+  position: relative;
+  height: 80%;
+  align-items: center;
+  text-align: center;
+}
+
+.bot_card_body p {
+  text-align: center;
+  word-break: break-word;
+}
+
+.button-toggle-container-cici {
+  border: none;
+  outline: none;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  top: 40px;
+  right: 8px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 59px;
+  cursor: pointer;
+}
+
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}
+:root {
+  --base_color: #2a5da8;
+  --text_color: #ffffff;
+}
+iframe#ssl_bot_dom_iframe {
+  display: initial;
+  width: 100%;
+  height: 100% !important;
+  border: none;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: transparent;
+  display: none;
+}
+.ssl_bot_dom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2147483647;
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  width: 390px;
+  height: 520px;
+}
+.ssl_bot_dom.ssl_only_chat_btn {
+  width: 80px;
+  height: 80px;
+}
+button.ssl_chat_trigger {
+  background: var(--base_color);
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  border: 0 none;
+  outline: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 2px 6px 14px rgb(0, 0, 0, 0.2);
+  float: right;
+  position: fixed;
+  right: 30px;
+  bottom: 50px;
+}
+@media (max-width: 640px) {
+  .ssl_bot_dom {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+.tooltip {
+  position: relative;
+}
+
+.tooltip:before {
+  content: attr(data-tooltip-text);
+  position: absolute;
+  min-width: 200px;
+  width: auto;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.tooltip:hover:before {
+  opacity: 1;
+}
+</style></div></body></html>
